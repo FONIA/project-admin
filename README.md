@@ -1,4 +1,4 @@
-项目管理系统
+﻿项目管理系统
 ===============
 
 tp5框架，多数采用原生技术。
@@ -75,27 +75,27 @@ ps：注释被吃掉了 ------ 没错，就是懒。
 
 截图：
 
-![1](C:\Users\yu\Desktop\1.png)
+![1](.\1.png)
 
-![2](C:\Users\yu\Desktop\2.png)
+![2](.\2.png)
 
-![3](C:\Users\yu\Desktop\3.png)
+![3](.\3.png)
 
-![4](C:\Users\yu\Desktop\4.png)
+![4](.\4.png)
 
-![5](C:\Users\yu\Desktop\5.png)
+![5](.\5.png)
 
-![6](C:\Users\yu\Desktop\6.png)
+![6](.\6.png)
 
-![7](C:\Users\yu\Desktop\7.png)
+![7](.\7.png)
 
-![8](C:\Users\yu\Desktop\8.png)
+![8](.\8.png)
 
-![9](C:\Users\yu\Desktop\9.png)
+![9](.\9.png)
 
-![10](C:\Users\yu\Desktop\10.png)
+![10](.\10.png)
 
-![11](C:\Users\yu\Desktop\11.png)
+![11](.\11.png)
 
 
 
