@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		{:X['DESC']}
+		<title></title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			div[main] {
+				width: calc(100% - 60px);
+				height: 100%;
+				padding: 0 30px 30px;
+				background: #fff;
+				border-top: 5px solid #797979;
+			}
+			
+			div[main]>p {
+				padding: 10px 0px 15px;
+				font-family: 'Arial Negreta', 'Arial Normal', 'Arial';
+				font-weight: 700;
+				font-style: normal;
+				font-size: 20px;
+				letter-spacing: 5px;
+			}
+			
+			table {
+				width: 100%;
+			}
+			
+			td,
+			th {
+				height: 30px;
+				line-height: 30px;
+				text-align: center;
+			}
+			
+			.live {
+				line-height: 30px;
+				height: 100%;
+				display: block;
+				position: relative;
+				z-index: 1;
+				text-align: center;
+				width: 100%;
+			}
+			
+			.live span {
+				height: 100%;
+				background: #00c111;
+				float: left;
+				position: absolute;
+				z-index: -1;
+				left: 0;
+			}
+			
+			button {
+				width: 100px;
+				background: #fff;
+				margin: 0 5px;
+				height: 30px;
+				line-height: 30px;
+				font-size: 14px;
+				border: 1px solid #797979;
+				border-radius: 30px;
+				-moz-box-shadow: 2px 2px 2px rgba(204, 204, 204, .5);
+				-webkit-box-shadow: 2px 2px 2px rgba(204, 204, 204, .5);
+				box-shadow: 2px 2px 2px rgba(204, 204, 204, .5);
+				outline: none;
+			}
+			
+			button:hover {
+				background: #99ccff;
+				color: #fff;
+				border: 1px solid #99ccff;
+				cursor: pointer;
+			}
+			
+			.ed {
+				right: 30px;
+				position: absolute;
+				top: 15px;
+			}
+			
+			tbody>tr>td:nth-child(13),tbody>tr>td:nth-child(14),tbody>tr>td:nth-child(15) {
+				cursor: pointer;
+			}
+			#pagination{
+				text-align: center;
+				padding-top: 20px;
+                    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+			}
+			#pagination a {				
+				    padding: 8px;
+    margin: 0 2px 0 2px;
+    border-radius: 4px;
+    border: 1px solid #E3E3E3;
+    cursor: pointer;
+    box-shadow: inset 0 1px 0 0 #FFF, 0 1px 2px #666;
+    text-shadow: 0 1px 1px #FFF;
+    background-color: #E6E6E6;
+    background-image: -webkit-linear-gradient(top, #F3F3F3, #D7D7D7);
+    background-image: -moz-linear-gradient(top, #F3F3F3, #D7D7D7);
+    background-image: -ms-linear-gradient(top, #F3F3F3, #D7D7D7);
+    background-image: -o-linear-gradient(top, #F3F3F3, #D7D7D7);
+    background-image: linear-gradient(top, #F3F3F3, #D7D7D7);
+}
+#pagination>input[type="number"] {
+	height: 25px;
+	width: 35px;
+	padding: 8px;
+    margin: 0 2px 0 2px;
+    border-radius: 4px;
+    border: 1px solid #E3E3E3;
+    outline: none;
+}
+#pagination>input[type="button"] {
+	padding: 8px;
+    margin: 0 2px 0 2px;
+    border-radius: 4px;
+    border: 1px solid #E3E3E3;
+    cursor: pointer;
+    box-shadow: inset 0 1px 0 0 #FFF, 0 1px 2px #666;
+    text-shadow: 0 1px 1px #FFF;
+    background-color: #E6E6E6;
+    background-image: -webkit-linear-gradient(top, #F3F3F3, #D7D7D7);
+    background-image: -moz-linear-gradient(top, #F3F3F3, #D7D7D7);
+    background-image: -ms-linear-gradient(top, #F3F3F3, #D7D7D7);
+    background-image: -o-linear-gradient(top, #F3F3F3, #D7D7D7);
+    background-image: linear-gradient(top, #F3F3F3, #D7D7D7);
+    outline: none;
+}
+#pagination a[chk]{
+	border: 1px solid #FF9800;
+    color: #fff;
+    background-color: #ff4141;
+    box-shadow: inset 0 1px 0 0 #e8aeae, 0 1px 2px #e08787;
+    background-image: -webkit-linear-gradient(top, #e6b9b9, #ff0000);
+}
+#pagination i {
+    margin: 0 3px 0 3px;
+    padding: 8px;
+}
+		</style>
+	</head>
+
+	<body>
+		<div main>
+			<p>项目总览</p>
+			<button onclick="window.location.assign('/newtask')" class="ed">新建项目</button>
+			<table border="1" align="center" cellpadding="6">
+				<thead>
+					<tr>
+						<th>序号</th>
+						<th>项目编号</th>
+						<th>客户</th>
+						<th>项目名称</th>
+						<th>项目类别</th>
+						<th>工程师</th>
+						<th>开始日期</th>
+						<th>计划完成日期</th>
+						<th>实际完成日期</th>
+						<th>计划天数</th>
+						<th>延迟天数</th>
+						<th>项目总进度</th>
+						<th colspan="3">操作</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					{volist name="data" id="v"}
+					<tr {$v.diff>=1?'style="background:red;color:#fff;"':''}>
+						<td>{$key+1}</td>
+						<td>{$v.pid}</td>
+						<td>{$v.custom}</td>
+						<td>{$v.name}</td>
+						<td>{$v.type}</td>
+						<td>{$v.worker}</td>
+						<td>{$v.stime}</td>
+						<td>{$v.etime}</td>
+						<td>{$v.rtime}</td>
+						<td>{$v.day}</td>
+						<td>{$v.diff}</td>
+						<td>{$v.rate}</td>
+						<td>编辑</td>
+						<td>修改</td>
+						<td>图表</td>
+					</tr>
+					{/volist}
+				</tbody>
+			</table>
+			<div id="pagination"></div>
+		</div>
+	    <script src="/static/js/main.js"></script>
+		<script>
+		    {if condition="$num>1"}
+		    var step=FONIA.Cookie({name:'allpj'})==null?1:FONIA.Cookie({name:'allpj'});
+		    FONIA.Pagination({id:"pagination",step:[parseInt(step),10,{$num}],url:"/jump",pageid:'allpj',listen:listen});
+		    {/if}
+		    function listen(){
+			document.querySelectorAll('tbody>tr>td:nth-child(13)').forEach(function(a) {
+				if(a.innerText == '编辑') {
+					a.addEventListener('click', function() {
+						window.location.replace('/pid/' + this.parentNode.children[1].innerText);
+					});
+				}
+			});
+			document.querySelectorAll('tbody>tr>td:nth-child(14)').forEach(function(a) {
+				if(a.innerText == '修改') {
+					a.addEventListener('click', function() {
+						window.location.replace('/task/' + this.parentNode.children[1].innerText);
+					});
+				}
+			});
+			document.querySelectorAll('tbody>tr>td:nth-child(15)').forEach(function(a) {
+				if(a.innerText == '图表') {
+					a.addEventListener('click', function() {
+						window.location.replace('/analyze/' + this.parentNode.children[1].innerText);
+					});
+				}
+			});
+			document.querySelectorAll('tbody>tr>td:nth-child(12)').forEach(function(a) {
+				a.innerHTML='<li class="live">'+a.innerText+'%<span style="width:'+a.innerText+'%;"></span></li>';
+			});
+			window.parent.frames.windowslisten();
+			}
+		    window.onload=listen();
+		</script>
+	</body>
+
+</html>

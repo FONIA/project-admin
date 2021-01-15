@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		{:X['DESC']}
+		<title></title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			div[main] {
+				width: calc(100% - 60px);
+				height: 100%;
+				padding: 0 30px 30px;
+				background: #fff;
+				border-top: 5px solid #797979;
+			}
+			
+			div[main]>p,select {
+				padding: 10px 0px 15px;
+				font-family: 'Arial Negreta', 'Arial Normal', 'Arial';
+				font-weight: 700;
+				font-style: normal;
+				font-size: 20px;
+				letter-spacing: 5px;
+			}
+			#main{
+				width: 100%;
+				height: 680px;
+			}
+			select{
+				border: none;
+				outline: none;
+				padding: 0;
+			}
+		</style>
+		<script type="text/javascript" src="../static/js/cave.js"></script>
+	</head>
+
+	<body>
+		<div main>
+			<p>统计汇总</p>
+			<div id="main"></div>
+			<p style="text-align: center;">
+				<select onchange="window.location.assign('/userct/'+this.value)">
+					{volist name="year" id="y"}
+					{if condition="$y.year eq $id"}
+					<option value="{$y.year}" selected="selected">{$y.year}年</option>
+					{else /}
+					<option value="{$y.year}">{$y.year}年</option>
+					{/if}
+					{/volist}
+				</select>
+			</p>
+		</div>
+		<script>
+			var myChart = echarts.init(document.getElementById('main'));
+			option = {
+    legend: {},
+    toolbox: {
+        show: true,
+        feature: {
+            dataZoom: {
+                yAxisIndex: 'none'
+            },
+            magicType: {type: ['line', 'bar']},
+            saveAsImage: {}
+        }
+    },
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'shadow',          
+        }
+    },
+    dataset: {
+        source: {$project}
+    },
+    xAxis: {type: 'category',name:'月份'},
+    yAxis: {name:'数量',interval: 1},
+    // Declare several bar series, each will be mapped
+    // to a column of dataset.source by default.
+    series: [
+        {$series}
+    ]
+};
+
+			myChart.setOption(option);
+		</script>
+	</body>
+     
+</html>

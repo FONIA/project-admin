@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8"> {:X['DESC']}
+		<title></title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			div[main] {
+				width: calc(100% - 60px);
+				height: 100%;
+				padding: 0 30px 30px;
+				background: #fff;
+				border-top: 5px solid #797979;
+			}
+			
+			div[main]>p {
+				padding: 10px 0px 15px;
+				font-family: 'Arial Negreta', 'Arial Normal', 'Arial';
+				font-weight: 700;
+				font-style: normal;
+				font-size: 20px;
+				letter-spacing: 5px;
+			}
+			
+			#main {
+				width: 100%;
+				height: 720px;
+			}
+			
+			button {
+				width: 100px;
+				background: #fff;
+				margin: 0 5px;
+				height: 30px;
+				line-height: 30px;
+				font-size: 14px;
+				border: 1px solid #797979;
+				border-radius: 30px;
+				-moz-box-shadow: 2px 2px 2px rgba(204, 204, 204, .5);
+				-webkit-box-shadow: 2px 2px 2px rgba(204, 204, 204, .5);
+				box-shadow: 2px 2px 2px rgba(204, 204, 204, .5);
+				outline: none;
+			}
+			
+			button:hover {
+				background: #99ccff;
+				color: #fff;
+				border: 1px solid #99ccff;
+				cursor: pointer;
+			}
+			
+			.ed {
+				right: 30px;
+				position: absolute;
+				top: 15px;
+			}
+		</style>
+		<script type="text/javascript" src="../static/js/cave.js"></script>
+	</head>
+
+	<body>
+		<div main>
+			<p>项目进度日程</p>
+			<button onclick="window.location.assign('/allpj')" class="ed">返回</button>
+			<div id="main"></div>
+		</div>
+		<script>
+			var parse=(function()
+			{
+				var list={$data};
+				var data='';var arr=[];var day=[];
+				for(var i in list){
+					data={title:{subtext:'日期：'+list[i][0]},series:{data:list[i][1]}};
+					arr.push(data);day.push(list[i][0]);
+				}
+				return [day,arr,list.length-1];
+			})();
+			var myChart = echarts.init(document.getElementById('main'));
+			var option = {
+				baseOption: {
+					title: {
+						text: '项目编号：{$id}',
+						x: 'center',
+						textStyle: {
+							fontSize: 20
+						},
+						subtextStyle: {
+							"color": "#333"
+						}
+					},
+					toolbox: {
+						show: true,
+						feature: {
+							dataZoom: {
+								yAxisIndex: 'none'
+							},
+							magicType: {
+								type: ['line', 'bar']
+							},
+							saveAsImage: {}
+						}
+					},
+					timeline: {
+						axisType: 'category',
+						show: true,
+						autoPlay: true,
+						playInterval: 2000,
+						currentIndex:parse[2],
+						data: parse[0]
+					},
+					grid: {
+						containLabel: true
+					},
+					xAxis: [{
+						type: 'category',
+						axisLabel: {
+							interval: 0,
+							rotate: -30
+						},
+						name: '项目步骤',
+						data: ['项目启动', '方案资料分析', '方案设计', '方案审核', '方案报价', '方案报价评审', '项目任务书', '项目制作资料分析', '系统方框图设计', '系统方框图审核', '长交期BOM', 'SCH设计', 'SCH审核', '完成BOM', 'PCB设计', 'PCB审核', '接线图设计', '接线图审核', '	公司调试', '现场调试', '	资料归档']
+					}],
+					yAxis: {
+						type: 'value',
+						name: '进度',
+						interval: 10
+					},
+					series: [{
+						type: 'bar',
+						label: {
+							show: true,
+							position: 'inside',
+							formatter: '{c}%'
+						}
+					}],
+					tooltip: {
+						trigger: 'axis',
+						axisPointer: {
+							type: 'shadow',
+						}
+					},
+				},
+				options: parse[1]
+			}
+			myChart.setOption(option);
+		</script>
+	</body>
+
+</html>

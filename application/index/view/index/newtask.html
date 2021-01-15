@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		{:X['DESC']}
+		<title></title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			div[main] {
+				width: calc(100% - 60px);
+				height: 100%;
+				padding: 0 30px 30px;
+				background: #fff;
+				border-top: 5px solid #797979;
+			}
+			
+			div[main]>p {
+				padding: 10px 0px 15px;
+				font-family: 'Arial Negreta', 'Arial Normal', 'Arial';
+				font-weight: 700;
+				font-style: normal;
+				font-size: 28px;
+				text-align: center;
+				letter-spacing: 5px;
+			}
+			
+			button:hover {
+				background: #99ccff;
+				color: #fff;
+				border: none;
+				cursor: pointer;
+			}
+			
+			button {
+				width: 100px;
+				background: #fff;
+				margin: 0 5px;
+				height: 30px;
+				line-height: 30px;
+				font-size: 16px;
+				border: 1px solid #797979;
+				border-radius: 30px;
+				-moz-box-shadow: 2px 2px 2px rgba(204, 204, 204, .5);
+				-webkit-box-shadow: 2px 2px 2px rgba(204, 204, 204, .5);
+				box-shadow: 2px 2px 2px rgba(204, 204, 204, .5);
+				outline: none;
+			}
+			.rt {
+				position: absolute;
+				top: 20px;
+			}
+			
+			table {
+				margin: 0 auto;
+			}
+			
+			td,
+			th,input,textarea{
+				height: 45px;
+				text-align: center;
+				width: 160px;
+				font-size: 15px;
+			}
+			td[b],textarea{
+				height: 100px;
+			}
+			.ed {
+position: absolute;
+}
+input {
+    width: 100%;
+    border: none;
+    outline: none;
+}
+textarea{
+	width: calc(100% - 10px);
+    border: none;
+    outline: none;
+	padding: 5px;
+	letter-spacing: 1.5px;
+	font-size: 16px;
+}
+select{
+	width: 100%;
+    border: none;
+    outline: none;
+    height: 100%;
+}
+		</style>
+	</head>
+
+	<body>
+		<div main>
+			<p>新建项目</p>
+			<button class="rt" onclick="window.history.back()">返回</button>
+			<button id="post" class="ed">提交</button>
+			<table class="first" border="1" align="center" cellpadding="6">
+				<tbody>
+					<tr>
+						<td colspan="6">基本信息</td>
+					</tr>
+					<tr>
+						<td>项目编号</td>
+						<td><input /></td>
+						<td>项目名称</td>
+						<td><input /></td>
+						<td>项目类型</td>
+						<td><input /></td>
+						
+					</tr>
+					<tr>
+						<td>客户</td>
+						<td><input /></td>
+						<td>机种名称</td>
+						<td><input /></td>
+						<td>套数</td>
+						<td><input /></td>
+					</tr>
+					<tr>
+						<td>夹具类型</td>
+						<td><input /></td>
+						<td>派单日期</td>
+						<td><input type="date" /></td>
+						<td>客户交期</td>
+						<td><input type="date" /></td>
+					</tr>
+					<tr>
+						<td>图纸页数</td>
+						<td><input /></td>
+						<td>出货地点</td>
+						<td><input /></td>
+						<td>产品用途</td>
+						<td><input /></td>
+					</tr>
+					<tr>
+						<td>是否应力测试</td>
+						<td><input /></td>
+						<td>应力测试所需数量</td>
+						<td><input /></td>
+						<td>应力片型号规格</td>
+						<td><input /></td>
+					</tr>
+					<tr>
+						<td>项目工程师</td>
+						<td colspan="5">
+							<input type="hidden" value=""/>
+							<select onchange="this.previousElementSibling.value=this.value;this.style.backgroundColor=='red'?this.style.backgroundColor='transparent':''">
+								<option value="">请选择工程师</option>
+								{volist name="user" id="v"}
+									<option value="{$v.uid}">{$v.depa}-{$v.job}-{$v.name}</option>
+								{/volist}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>客户资料</td>
+						<td colspan="5"><input /></td>
+					</tr>
+					<tr>
+						<td>客户供品</td>
+						<td colspan="5"><input /></td>
+					</tr>
+					<tr>
+						<td colspan="6">客户要求</td>
+					</tr>
+					<tr>
+						<td b colspan="6"><textarea></textarea></td>
+					</tr>
+					<tr>
+						<td colspan="6">品质要求</td>
+					</tr>
+					<tr>
+						<td b colspan="6"><textarea></textarea></td>
+					</tr>
+					<tr>
+						<td colspan="6">备注</td>
+					</tr>
+					<tr>
+						<td b colspan="6"><textarea></textarea></td>
+					</tr>
+				</tbody>
+			</table>
+			
+				</div>
+		<script>
+			document.querySelectorAll('input')[0].focus();
+			document.getElementById('post').addEventListener('click',function(){
+				var arr=new Array();var m=[0,1,2,3,7,8,15];var flag=true;
+				document.querySelectorAll('input').forEach((a,b)=>{
+					Array.from(m,x=>{
+						if(x==b){
+				        if(x==15){
+				        	if(a.value==''||undefined){a.nextElementSibling.style.backgroundColor='red';flag=false;}else{a.nextElementSibling.style.backgroundColor='transparent';}
+				        }else{
+						if(a.value==''||undefined){a.style.backgroundColor='red';flag=false;}else{a.style.backgroundColor='transparent';}
+						}}
+					});								
+					arr.push(a.value);
+				});
+				if(flag==false){alert('红色区块必填！');throw 'FONIA';}
+				document.querySelectorAll('textarea').forEach((a)=>{
+					arr.push(a.value);
+				});
+				FONIA.Ajax({type:'post',url:'/newpj',data:{'data':JSON.stringify(arr)},success:function(e){
+					if(e.statu==1){alert('新建成功！');}else{alert(e.msg);throw 'FONIA';}
+				},error:function(e,m){
+					if(m=='timeout'){alert('请求超时！');}else{alert('未知错误');}
+					throw 'FONIA';
+				}});
+			});
+			window.FONIA=(function(){
+		return {pack: function() {
+			if(typeof arguments[0] === 'object') {
+				var pack = '';
+				for(var i in arguments[0]) {
+					pack += encodeURIComponent(i) + '=' + encodeURIComponent(arguments[0][i]) + '&';
+				}
+				return pack.substr(0, pack.length - 1);
+			} else {
+				return data;
+			}
+		},
+		Ajax: function() {
+			var method = arguments[0].type || 'GET';
+			var url = arguments[0].url || null;
+			var async = arguments[0].async || true;
+			var datatype = arguments[0].datatype || 'json';
+			var data = arguments[0].data || null;
+			var timeout = parseInt(arguments[0].timeout) || 3000;
+			var before = arguments[0].before || function() {};
+			var success = arguments[0].success || function() {};
+			var error = arguments[0].error || function() {};
+			var complete = arguments[0].complete || function() {};
+			method=method.toUpperCase();
+			before();
+			var xml = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject();
+			method == 'GET' ? (url = url + '?' + this.pack(data)) : null;
+			xml.open(method, url, async);
+			method == 'POST' ? (xml.setRequestHeader("content-type", "application/x-www-form-urlencoded")) : null;
+			xml.send(this.pack(data));
+			var tflag = setTimeout(function() {
+				if(xml.readyState != 4) {
+					error(xml, 'timeout');
+					xml.onreadystatechange = function() {};
+					xml.abort();
+				}
+			}, timeout);
+			xml.onreadystatechange = function() {
+				if(xml.readyState === 4) {
+					window.clearTimeout(tflag);
+					var status = xml.status;
+					if(status >= 200 && status < 300 || status == 304) {
+						success(JSON.parse(xml.responseText));
+					} else {
+						error(xml, status);
+					}
+				}
+			}
+		},};
+		})();
+		</script>
+	</body>
+
+</html>

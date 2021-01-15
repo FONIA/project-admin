@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		{:X['DESC']}
+		<title>新建项目</title>
+		<script type="text/javascript" src="/static/js/main.js" ></script>
+		<style>
+			* {
+				padding: 0;
+				margin: 0;
+			}
+			
+			*,
+			 :after,
+			 :before {
+				-webkit-box-sizing: border-box;
+				box-sizing: border-box;
+			}
+			.form{
+				color: #000;
+			}
+			.sy-alert {
+				display: block;
+				top: 50px;
+				border: 1px solid #000;
+				box-shadow: 6px 4px 5px #c1c1c1;
+				background: #fff;
+				border-radius: 5px;
+				overflow: hidden;
+				max-width: 90%;
+				left: 0;
+				right: 0;
+				margin: 20px auto;
+				z-index: 9999;
+			}
+			
+			.sy-alert .sy-title {
+				height: 45px;
+				color: #000;
+				line-height: 45px;
+				font-size: 15px;
+				border-bottom: 1px solid #000;
+				padding: 0 12px;
+			}
+			
+			.sy-alert.sy-alert-model .sy-content {
+				text-align: left;
+			}
+			
+			.sy-alert .sy-content {
+				padding: 20px;
+				text-align: center;
+				font-size: 14px;
+				line-height: 24px;
+				color: #666;
+				overflow-y: auto;
+			}
+			
+			.sy-alert .sy-btn {
+				height: 50%;
+				border-top: 1px solid #eee;
+				overflow: hidden;
+			}
+			
+			.sy-alert .sy-btn button {
+				float: left;
+				border: 0;
+				color: #333;
+				cursor: pointer;
+				background: #fff;
+				width: 100%;
+				line-height: 45px;
+				font-size: 15px;
+				text-align: center;
+			}
+			
+			.sy-alert.sy-alert-model .sy-content .form .input-item {
+				margin-bottom: 12px;
+				position: relative;
+			}
+			
+			.sy-alert.sy-alert-model .sy-content .form .input-item input,
+			.input-item select {
+				display: block;
+				position: relative;
+				width: 100%;
+				border: 1px solid #000;
+				padding: 15px;
+				outline: none;
+			}
+			
+			textarea {
+				display: block;
+				position: relative;
+				width: 100%;
+				border: 1px solid #000;
+				padding: 10px;
+				outline: none;
+				min-height: 100px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="box" class="sy-alert sy-alert-model animated">
+			<div class="sy-title posttitle">项目详情</div>
+			<form method="post" action="/newproject" onsubmit="return FONIA.NewPid();">
+				<div class="sy-content">
+					<div class="form">
+						{:token('csrf')}
+						项目编号：
+						<p class="input-item"><input title="项目编号" name="id" type="text" autocomplete="off"></p>
+						项目类型：
+						<p class="input-item"><input title="项目类型" name="type" type="text" autocomplete="off"></p>
+						客户：
+						<p class="input-item"><input title="客户" name="custom" type="text" autocomplete="off"></p>
+						项目名称：
+						<p class="input-item"><input title="项目名称" name="title" type="text" autocomplete="off"></p>
+						项目工程师：
+						<p class="input-item">
+							<select title="项目工程师" name="worker">
+								<option value="null">请选择工程师</option>
+								{volist name="user" id="v"}							
+									<option value="{$key}">{$v.name}</option>
+								{/volist}
+							</select>
+						</p>
+						项目开始日期：
+						<p class="input-item"><input name="stime" type="date" title="开始日期" autocomplete="off"></p>
+						计划交付日期：
+						<p class="input-item"><input name="etime" type="date" title="计划交付日期" autocomplete="off"></p>
+						项目备注：
+						<p class="input-item"><textarea title="项目备注" name="tips" type="text" autocomplete="off"></textarea></p>						
+					</div>
+				</div>
+				<div class="sy-btn">
+					<button type="submit">提交</button>
+				</div>
+			</form>
+		</div>
+	</body>
+
+</html>

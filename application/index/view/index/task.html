@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8"> {:X['DESC']}
+		<title></title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			div[main] {
+				width: calc(100% - 60px);
+				height: 100%;
+				padding: 0 30px 30px;
+				background: #fff;
+				border-top: 5px solid #797979;
+			}
+			
+			div[main]>p {
+				padding: 10px 0px 15px;
+				font-family: 'Arial Negreta', 'Arial Normal', 'Arial';
+				font-weight: 700;
+				font-style: normal;
+				font-size: 28px;
+				text-align: center;
+			}
+			
+			button:hover {
+				background: #99ccff;
+				color: #fff;
+				border: 1px solid #99ccff;
+				cursor: pointer;
+			}
+			
+			button {
+				width: 100px;
+				background: #fff;
+				margin: 0 5px;
+				height: 30px;
+				line-height: 30px;
+				font-size: 16px;
+				border: 1px solid #797979;
+				border-radius: 30px;
+				-moz-box-shadow: 2px 2px 2px rgba(204, 204, 204, .5);
+				-webkit-box-shadow: 2px 2px 2px rgba(204, 204, 204, .5);
+				box-shadow: 2px 2px 2px rgba(204, 204, 204, .5);
+				outline: none;
+			}
+			
+			.rt {
+				position: absolute;
+				top: 20px;
+			}
+			
+			table {
+				margin: 0 auto;
+			}
+			
+			textarea {
+				width: calc(100% - 10px);
+				border: none;
+				outline: none;
+				padding: 5px;
+				letter-spacing: 1.5px;
+				font-size: 16px;
+				text-align: center;
+				height: 90px;
+			}
+			
+			td,
+			th {
+				height: 45px;
+				text-align: center;
+				width: 160px;
+				font-size: 15px;
+			}
+			
+			td[b] {
+				height: 100px;
+			}
+			
+			input {
+				width: 100%;
+				border: none;
+				outline: none;
+				height: 45px;
+				text-align: center;
+				font-size: 15px;
+			}
+			
+			select {
+				width: 100%;
+				border: none;
+				outline: none;
+				height: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div main>
+			<p>{$res.pid}项 目 任 务 书</p>
+			<button class="rt" onclick="window.location.assign('/{:$_SESSION['think']['USER']['type']=='user'?'project':'allpj'}')">首页</button>
+			<button class="rt" style="top: 60px;" onclick="window.history.back()">返回</button>
+			{if condition="$_SESSION['think']['USER']['pidpw']==1"}
+			<button class="rt" style="top: 100px;" onclick="changeinput(this)">修改资料</button>
+			{/if}
+			<table class="first" border="1" align="center" cellpadding="6">
+				<tbody>
+					<tr>
+						<td colspan="6">基本信息</td>
+					</tr>
+					<tr>
+						<td>项目编号</td>
+						<td>{$res.pid}</td>
+						<td>项目名称</td>
+						<td>{$res.name}</td>
+						<td>项目类型</td>
+						<td>{$res.type}</td>
+
+					</tr>
+					<tr>
+						<td>客户名称</td>
+						<td>{$res.custom}</td>
+						<td>机种名称</td>
+						<td>{$res.ask[0]}</td>
+						<td>套数</td>
+						<td>{$res.ask[1]}</td>
+					</tr>
+					<tr>
+						<td>夹具类型</td>
+						<td>{$res.ask[2]}</td>
+						<td>派单日期</td>
+						<td>{:date('Y/m/d',$res.stime)}</td>
+						<td>客户交期</td>
+						<td>{:date('Y/m/d',$res.etime)}</td>
+					</tr>
+					<tr>
+						<td>图纸页数</td>
+						<td>{$res.ask[3]}</td>
+						<td>出货地点</td>
+						<td>{$res.ask[4]}</td>
+						<td>产品用途</td>
+						<td>{$res.ask[5]}</td>
+					</tr>
+					<tr>
+						<td>是否应力测试</td>
+						<td>{$res.ask[6]}</td>
+						<td>应力测试所需数量</td>
+						<td>{$res.ask[7]}</td>
+						<td>应力片型号规格</td>
+						<td>{$res.ask[8]}</td>
+					</tr>
+					<tr>
+						<td>项目工程师</td>
+						<td colspan="5">{$res.worker}</td>
+					</tr>
+					<tr>
+						<td>客户资料</td>
+						<td colspan="5">{$res.ext[0]}</td>
+					</tr>
+					<tr>
+						<td>客户供品</td>
+						<td colspan="5">{$res.ext[1]}</td>
+					</tr>
+					<tr>
+						<td colspan="6">客户要求</td>
+					</tr>
+					<tr>
+						<td b colspan="6">{$res.ext[2]}</td>
+					</tr>
+					<tr>
+						<td colspan="6">品质要求</td>
+					</tr>
+					<tr>
+						<td b colspan="6">{$res.ext[3]}</td>
+					</tr>
+					<tr>
+						<td colspan="6">备注</td>
+					</tr>
+					<tr>
+						<td b colspan="6">{$res.ext[4]}</td>
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+		<script src="/static/js/main.js"></script>
+		<script>
+			var rt = function() {
+				document.querySelectorAll('input').forEach(function(a, b) {
+					if(b == 14) {
+						a.parentElement.innerHTML = document.getElementsByTagName('select')[0].selectedOptions[0].innerText.split('-')[2];
+					} else {
+						a.parentElement.innerHTML = a.value;
+					}
+				});
+				document.getElementsByTagName('button')[2].innerText = '修改资料';
+				document.getElementsByTagName('button')[2].setAttribute('onclick', 'changeinput(this)');
+				document.getElementsByTagName('button')[3].remove();
+			}
+
+			var changeinput = function(a) {
+				FONIA.Ajax({
+					type: "POST",
+					url: '/getwk',
+					success: function(e) {
+						if(e.statu == 1) {
+							document.querySelectorAll('tr>td:nth-child(even)').forEach(function(a, b) {
+								if(b != 15 && b != 0) {
+									a.innerHTML = '<input value="' + a.innerText + '" />';
+								}
+							});
+							document.querySelectorAll('tr>td[b]').forEach(function(a) {
+								a.innerHTML = '<textarea>' + a.innerText + '</textarea>';
+							});
+							window.parent.frames.windowslisten();
+							var s = '';
+							var ipt = '';
+							for(var i in e.list) {
+								if(e.list[i].name == document.querySelectorAll('tr>td:nth-child(even)')[15].innerText) {
+									ipt = '<input type="hidden" value="' + e.list[i].uid + '" />';
+									s += '<option value="' + e.list[i].uid + '" selected>' + e.list[i].depa + '-' + e.list[i].job + '-' + e.list[i].name + '</option>';
+								} else {
+									s += '<option value="' + e.list[i].uid + '">' + e.list[i].depa + '-' + e.list[i].job + '-' + e.list[i].name + '</option>';
+								}
+							}
+							document.querySelectorAll('tr>td:nth-child(even)')[15].innerHTML = ipt + '<select onchange="this.previousElementSibling.value=this.value;this.style.backgroundColor==\'red\'?this.style.backgroundColor=\'transparent\':\'\'"><option value="">请选择工程师</option>' + s + '</select>';
+							a.innerText = '保存';
+							a.removeAttribute('onclick');
+							var s = document.createElement('button');
+							s.classList = 'rt';
+							s.style.top = '140px';
+							s.innerText = '取消';
+							a.parentNode.appendChild(s);
+							s.onclick = rt;
+							a.onclick = save;
+						} else {
+							alert(e.msg);
+						}
+					},
+					error: function(a, b) {
+						alert(b);
+					}
+				});
+			}
+			var save = function() {
+				var list = [];
+				var must = [0, 1, 2, 6, 7, 14];
+				var flag = true;
+				document.querySelectorAll('input').forEach(function(a, b) {
+					Array.from(must, x => {
+						if(x == b) {
+							if(x == 14) {
+								if(a.value == '' || undefined) {
+									a.nextElementSibling.style.backgroundColor = 'red';
+									flag = false;
+								} else {
+									a.nextElementSibling.style.backgroundColor = 'transparent';
+								}
+							} else {
+								if(a.value == '' || undefined) {
+									a.style.backgroundColor = 'red';
+									flag = false;
+								} else {
+									a.style.backgroundColor = 'transparent';
+								}
+							}
+						}
+					});
+					list.push(a.value);
+				});
+				if(flag == false) {
+					alert('红色区块必填！');
+					throw 'FONIA';
+				}
+				document.querySelectorAll('textarea').forEach(function(a) {
+					list.push(a.value);
+				});
+				FONIA.Ajax({
+					type: "POST",
+					url: '/uptask',
+					data: {
+						'pid': "{$res.pid}",
+						data: JSON.stringify(list)
+					},
+					success: function(e) {
+						if(e.statu == 1) {
+							rt();
+							alert('success');
+						} else {
+							alert(e.msg);
+						}
+					},
+					error: function(a, b) {
+						alert(b);
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

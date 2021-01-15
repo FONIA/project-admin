@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		{:X['DESC']}
+		<title>项目申报与管理系统-系统版本：{$version}</title>
+		<script type="text/javascript" src="/static/js/main.js" ></script>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}			
+			.main {
+				border-radius: 15px;
+				width: 380px;
+				margin: 0 auto;
+				border: 1px solid #fff;
+				box-shadow: 0 0 30px rgba(0, 0, 0, .38);
+				padding: 30px;
+			}			
+			.logo {
+				width: 380px;
+				margin: 0 auto 10px;
+			}			
+			html{
+				background: #fff;
+			}
+			.body {
+				width: 100%;
+			}			
+			.foot {
+				position: absolute;
+				bottom: 10px;
+				color: #CCCCCC;
+				text-align: center;
+				padding: 10px;
+				margin-left: -135px;
+				left: 50%;
+				font-size: 10px;
+			}			
+			input[type='text'],
+			input[type='password'] {
+				letter-spacing: 1px;
+				text-align: center;
+				margin-bottom: 10px;
+				height: 50px;
+				display: block;
+				padding: 5px;
+				width: calc(100% - 10px);
+				outline: none;
+				border: none;
+				top: 13px;
+				background-color: transparent;
+				font-size: 20px;
+				border-bottom: 1px solid #e5e5e5;
+			}			
+			.img {
+				height: 66px;
+				font-size: 25px;
+				line-height: 66px;
+			}
+			.btn {
+				border: none;
+				outline: none;
+				letter-spacing: 2px;
+				width: 340px;
+				font-size: 18px;
+				font-weight: bold;
+				color: white;
+				height: 50px;
+				line-height: 50px;
+				text-align: center;
+				margin: 20px auto;
+				display: block;
+				border-radius: 5px;
+				cursor: pointer;
+				background-color: #42a5f5;
+			}
+		</style>
+	</head>
+	<body>
+		<div align="center" class="main" style="margin-top: 100px;">
+			<div class="img">
+				<img src="/static/img/logo-02.png" class="logo" alt="深圳市微特自动化设备有限公司" />
+			</div>
+			<div class="body">
+				<form action="/login" method="post" onsubmit="return FONIA.check()">
+					{:token('csrf')}
+					<input name="acount" placeholder="请输入账号" type="text" autocomplete="off">
+					<input name="password" placeholder="请输入密码" type="password" autocomplete="off">
+					<button class="btn" type="submit">登录</button>
+				</form>
+			</div>
+		</div>
+		<p class="foot">{$sign} {$company}<br>Power By {$Author} Version {$version}</p>
+	</body>
+</html>

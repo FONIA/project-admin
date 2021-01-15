@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		{:X['DESC']}
+		<title></title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			div[main] {
+				width: calc(100% - 60px);
+				height: 100%;
+				padding: 0 30px 30px;
+				background: #fff;
+				border-top: 5px solid #797979;
+			}
+			
+			div[main]>p {
+				padding: 10px 0px 15px;
+				font-family: 'Arial Negreta', 'Arial Normal', 'Arial';
+				font-weight: 700;
+				font-style: normal;
+				font-size: 28px;
+				text-align: center;
+				letter-spacing: 5px;
+			}
+			
+			button:hover {
+				background: #99ccff;
+				color: #fff;
+				border: 1px solid #99ccff;
+				cursor: pointer;
+			}
+			
+			button {
+				width: 100px;
+				background: #fff;
+				margin: 0 5px;
+				height: 30px;
+				line-height: 30px;
+				font-size: 16px;
+				border: 1px solid #797979;
+				border-radius: 30px;
+				-moz-box-shadow: 2px 2px 2px rgba(204, 204, 204, .5);
+				-webkit-box-shadow: 2px 2px 2px rgba(204, 204, 204, .5);
+				box-shadow: 2px 2px 2px rgba(204, 204, 204, .5);
+				outline: none;
+			}
+			.rt {
+				position: absolute;
+				top: 20px;
+			}
+			
+			table {
+				margin: 0 auto;
+			}
+			
+			td,
+			th,input,textarea{
+				height: 45px;
+				text-align: center;
+				width: 160px;
+				font-size: 15px;
+			}
+			td[b],textarea{
+				height: 100px;
+			}
+			.ed {
+position: absolute;
+}
+input {
+    width: 100%;
+    border: none;
+    outline: none;
+}
+textarea{
+	width: calc(100% - 10px);
+    border: none;
+    outline: none;
+	padding: 5px;
+	letter-spacing: 1.5px;
+	font-size: 16px;
+}
+select {
+    width: 100%;
+    border: none;
+    outline: none;
+    height: 100%;
+}
+		</style>
+	</head>
+
+	<body>
+		<div main>
+			<p>新建员工</p>
+			<button class="rt" onclick="window.history.back()">返回</button>
+			<button class="ed">提交</button>
+			<table class="first" border="1" align="center" cellpadding="6">
+				<tbody>
+					<tr>
+						<td colspan="6">基本信息</td>
+					</tr>
+					<tr>
+						<td>工号</td>
+						<td><input /></td>
+						<td>姓名</td>
+						<td><input /></td>
+						<td>性别</td>
+						<td>
+							<input type="hidden" />
+							<select onchange="this.previousElementSibling.value=this.value;">
+								<option value="">请选择性别</option>
+								<option value="男">男</option>
+								<option value="女">女</option>
+							</select>							
+						</td>
+					</tr>
+					<tr>
+						<td>部门</td>
+						<td>
+							<input type="hidden" />
+							<select onchange="this.previousElementSibling.value=this.value;">
+								<option value="">请选择部门</option>
+								<option value="电子研发一部">电子研发一部</option>
+								<option value="电子研发二部">电子研发二部</option>
+								<option value="系统研发部">系统研发部</option>
+							</select>
+						</td>
+						<td>职务</td>
+						<td>
+							<input type="hidden" />
+							<select onchange="this.previousElementSibling.value=this.value;">
+								<option value="">请选择职务</option>
+								<option value="实习生">实习生</option>
+								<option value="技术员">技术员</option>
+								<option value="助理">助理</option>
+								<option value="工程师">工程师</option>
+								<option value="主管">主管</option>
+								<option value="经理">经理</option>
+								<option value="总监">总监</option>								
+							</select>
+						</td>
+						<td>入职日期</td>
+						<td><input type="date" /></td>
+					</tr>
+					<tr>
+						<td>联系电话</td>
+						<td><input /></td>
+						<td>邮箱</td>
+						<td><input /></td>
+						<td>状态</td>
+						<td>
+							<input type="hidden" />
+							<select onchange="this.previousElementSibling.value=this.value;">
+								<option value="">请选择状态</option>
+								<option value="在职">在职</option>
+								<option value="离职">离职</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>上级领导</td>
+						<td colspan="5">
+							<input type="hidden" />
+							<select onchange="this.previousElementSibling.value=this.value;">
+								<option value="">请选择领导</option>
+								<option value="朱振中">电子研发一部经理-朱振中</option>
+								<option value="陈焱国">电子研发二部经理-陈焱国</option>
+								<option value="王煌">系统研发部经理-王煌</option>
+								<option value="韩雪涛">电子研发一部总监-韩雪涛</option>
+								<option value="孙德滔">电子研发二部总监-孙德滔</option>							
+							</select>
+						</td>
+					</tr>				
+					
+					<tr>
+						<td colspan="6">备注</td>
+					</tr>
+					<tr>
+						<td b colspan="6"><textarea></textarea></td>
+					</tr>
+				</tbody>
+			</table>
+			
+				</div>
+		<script>
+			document.getElementsByClassName('ed')[0].addEventListener('click',function(){
+				var flag=true;var arr=new Array();
+				document.querySelectorAll('input').forEach(function(a){
+					if(a.value==''){flag=false;a.style.backgroundColor='red';}else{a.style.backgroundColor='transparent';}
+					arr.push(a.value);
+				});
+				arr.push(document.querySelectorAll('textarea')[0].value);
+				if(flag==false){alert('请填写完整！');throw 'FONIA';}
+				FONIA.Ajax({type:'post',url:'/add',data:{'data':JSON.stringify(arr)},success:function(e){
+					if(e.statu==1){alert('新建成功！');}else{alert(e.msg);throw 'FONIA';}
+				},error:function(e,m){
+					if(m=='timeout'){alert('请求超时！');}else{alert('未知错误');}
+					throw 'FONIA';
+				}});
+			});
+			window.FONIA=(function(){
+		return {pack: function() {
+			if(typeof arguments[0] === 'object') {
+				var pack = '';
+				for(var i in arguments[0]) {
+					pack += encodeURIComponent(i) + '=' + encodeURIComponent(arguments[0][i]) + '&';
+				}
+				return pack.substr(0, pack.length - 1);
+			} else {
+				return data;
+			}
+		},
+		Ajax: function() {
+			var method = arguments[0].type || 'GET';
+			var url = arguments[0].url || null;
+			var async = arguments[0].async || true;
+			var datatype = arguments[0].datatype || 'json';
+			var data = arguments[0].data || null;
+			var timeout = parseInt(arguments[0].timeout) || 3000;
+			var before = arguments[0].before || function() {};
+			var success = arguments[0].success || function() {};
+			var error = arguments[0].error || function() {};
+			var complete = arguments[0].complete || function() {};
+			method=method.toUpperCase();
+			before();
+			var xml = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject();
+			method == 'GET' ? (url = url + '?' + this.pack(data)) : null;
+			xml.open(method, url, async);
+			method == 'POST' ? (xml.setRequestHeader("content-type", "application/x-www-form-urlencoded")) : null;
+			xml.send(this.pack(data));
+			var tflag = setTimeout(function() {
+				if(xml.readyState != 4) {
+					error(xml, 'timeout');
+					xml.onreadystatechange = function() {};
+					xml.abort();
+				}
+			}, timeout);
+			xml.onreadystatechange = function() {
+				if(xml.readyState === 4) {
+					window.clearTimeout(tflag);
+					var status = xml.status;
+					if(status >= 200 && status < 300 || status == 304) {
+						success(JSON.parse(xml.responseText));
+					} else {
+						error(xml, status);
+					}
+				}
+			}
+		},};
+		})();
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		{:X['DESC']}
+		<title></title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			div[main] {
+				width: calc(100% - 60px);
+				height: 100%;
+				padding: 0 30px 30px;
+				background: #fff;
+				border-top: 5px solid #797979;
+			}
+			
+			div[main]>p,
+			select {
+				padding: 10px 0px 15px;
+				font-family: 'Arial Negreta', 'Arial Normal', 'Arial';
+				font-weight: 700;
+				font-style: normal;
+				font-size: 28px;
+				text-align: center;
+				letter-spacing: 5px;
+			}
+			
+			table {
+				width: 100%;
+			}
+			
+			td,
+			th {
+				height: 30px;
+				line-height: 30px;
+				text-align: center;
+			}
+			
+			button:hover {
+				background: #99ccff;
+				color: #fff;
+				border: 1px solid #99ccff;
+				cursor: pointer;
+			}
+			
+			button {
+				width: 100px;
+				background: #fff;
+				margin: 0 5px;
+				height: 30px;
+				line-height: 30px;
+				font-size: 16px;
+				border: 1px solid #797979;
+				border-radius: 30px;
+				-moz-box-shadow: 2px 2px 2px rgba(204, 204, 204, .5);
+				-webkit-box-shadow: 2px 2px 2px rgba(204, 204, 204, .5);
+				box-shadow: 2px 2px 2px rgba(204, 204, 204, .5);
+				outline: none;
+			}
+			
+			.rt {
+				position: absolute;
+				top: 20px;
+			}
+			
+			.ed {
+				position: absolute;
+				top: 20px;
+				left: 150px;
+			}
+			
+			.live {
+				line-height: 30px;
+				height: 100%;
+				display: block;
+				position: relative;
+				z-index: 1;
+				text-align: center;
+				width: 100%;
+			}
+			
+			.live span {
+				height: 100%;
+				background: #00c111;
+				float: left;
+				position: absolute;
+				z-index: -1;
+				left: 0;
+			}
+			
+			tbody>tr>td:nth-child(11) {
+				cursor: pointer;
+			}
+			
+			select {
+				border: none;
+				outline: none;
+				padding: 0;
+				font-size: 18px;
+				height: 30px;
+				line-height: 30px;
+				margin: 0 10px;
+			}
+			
+			#main {
+				width: 100%;
+				height: 680px;
+			}
+			#pagination{
+				text-align: center;
+				padding-top: 20px;
+                    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+			}
+			#pagination a {				
+				    padding: 8px;
+    margin: 0 2px 0 2px;
+    border-radius: 4px;
+    border: 1px solid #E3E3E3;
+    cursor: pointer;
+    box-shadow: inset 0 1px 0 0 #FFF, 0 1px 2px #666;
+    text-shadow: 0 1px 1px #FFF;
+    background-color: #E6E6E6;
+    background-image: -webkit-linear-gradient(top, #F3F3F3, #D7D7D7);
+    background-image: -moz-linear-gradient(top, #F3F3F3, #D7D7D7);
+    background-image: -ms-linear-gradient(top, #F3F3F3, #D7D7D7);
+    background-image: -o-linear-gradient(top, #F3F3F3, #D7D7D7);
+    background-image: linear-gradient(top, #F3F3F3, #D7D7D7);
+}
+#pagination>input[type="number"] {
+	height: 25px;
+	width: 35px;
+	padding: 8px;
+    margin: 0 2px 0 2px;
+    border-radius: 4px;
+    border: 1px solid #E3E3E3;
+    outline: none;
+}
+#pagination>input[type="button"] {
+	padding: 8px;
+    margin: 0 2px 0 2px;
+    border-radius: 4px;
+    border: 1px solid #E3E3E3;
+    cursor: pointer;
+    box-shadow: inset 0 1px 0 0 #FFF, 0 1px 2px #666;
+    text-shadow: 0 1px 1px #FFF;
+    background-color: #E6E6E6;
+    background-image: -webkit-linear-gradient(top, #F3F3F3, #D7D7D7);
+    background-image: -moz-linear-gradient(top, #F3F3F3, #D7D7D7);
+    background-image: -ms-linear-gradient(top, #F3F3F3, #D7D7D7);
+    background-image: -o-linear-gradient(top, #F3F3F3, #D7D7D7);
+    background-image: linear-gradient(top, #F3F3F3, #D7D7D7);
+    outline: none;
+}
+#pagination a[chk]{
+	border: 1px solid #FF9800;
+    color: #fff;
+    background-color: #ff4141;
+    box-shadow: inset 0 1px 0 0 #e8aeae, 0 1px 2px #e08787;
+    background-image: -webkit-linear-gradient(top, #e6b9b9, #ff0000);
+}
+#pagination i {
+    margin: 0 3px 0 3px;
+    padding: 8px;
+}
+		</style>
+		<script type="text/javascript" src="../static/js/cave.js"></script>
+	</head>
+
+	<body>
+		<div main>
+			<p>项目汇总({$name})</p>
+			<button class="rt" onclick="window.location.assign(document.referrer)">返回</button>
+			<button class="ed">图表</button>
+			<table border="1" align="center" cellpadding="6">
+				<thead>
+					<tr>
+						<th>序号</th>
+						<th>项目编号</th>
+						<th>项目类型</th>
+						<th>客户</th>
+						<th>项目名称</th>
+						<th>开始日期</th>
+						<th>计划交期</th>
+						<th>计划天数</th>
+						<th>延迟天数</th>
+						<th>项目进度</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					{volist name="data" id="v"}
+					<tr {$v.time>=1?'style="background:red;color:#fff;"':''}>
+						<td>{$v.id}</td>
+						<td>{$v.pid}</td>
+						<td>{$v.type}</td>
+						<td>{$v.custom}</td>
+						<td>{$v.name}</td>
+						<td>{$v.stime}</td>
+						<td>{$v.etime}</td>
+						<td>{$v.day}</td>
+						<td>{$v.time}</td>
+						<td>
+							<li class="live">{$v.rate}%<span style="width:{$v.rate}%;"></span></li>
+						</td>
+						<td>编辑</td>
+					</tr>
+					{/volist}
+				</tbody>
+			</table>
+			<div id="pagination"></div>
+			<div id="tb" style="display: none;">
+				<div id="main"></div>
+				<p style="text-align: center;">
+					<select onchange="getdata()">
+						<option value="null">请选择年份</option>
+						{volist name="year" id="y"}
+						<option value="{$y.year}">{$y.year}年</option>
+						{/volist}
+					</select>
+					<select onchange="getdata()">
+						<option value="null">请选择月份</option>
+						<option value="1">1月份</option>
+						<option value="2">2月份</option>
+						<option value="3">3月份</option>
+						<option value="4">4月份</option>
+						<option value="5">5月份</option>
+						<option value="6">6月份</option>
+						<option value="7">7月份</option>
+						<option value="8">8月份</option>
+						<option value="9">9月份</option>
+						<option value="10">10月份</option>
+						<option value="11">11月份</option>
+						<option value="12">12月份</option>
+					</select>
+				</p>
+			</div>
+		</div>
+		<script src="/static/js/main.js"></script>
+		<script>
+			function getdata(){
+				var list=[null,null];
+				document.querySelectorAll('select').forEach(function(a,b){
+					list[b]=parseInt(a.value);
+				});
+				if(!isNaN(list[0])&&!isNaN(list[1])){
+					var arr = [];
+				document.querySelectorAll('select').forEach(function(a) {
+					if(a.value == 'null') {
+						alert('请选择完成，再点击生成图表！');
+						throw 'FONIA';
+					}
+					arr.push(a.value);
+				});
+				FONIA.Ajax({
+					type: 'post',
+					url: '/ct',
+					data: {
+						'uid': "{$uid}",
+						'data': JSON.stringify(arr)
+					},
+					success: function(e) {
+						if(e.statu == 1) {
+							var arr=[[],[],[],[],[],[]];var arr2=e.arr2;
+							for(var i=0;i<e.series.length;i++){
+								e.series[i].push([]);
+								e.series[i][1]=[sumarry(e.series[i][1],0,0),sumarry(e.series[i][1],1,5),sumarry(e.series[i][1],6,6),sumarry(e.series[i][1],7,17),sumarry(e.series[i][1],18,19),sumarry(e.series[i][1],20,20)];
+							    for(var x=0;x<e.series[i][1].length;x++){
+							    	for(var y=0;y<e.series[i][1][x];y++){
+							    		arr[x].push([transtime(arr2[i][y]*1000),i]);						    		
+							    	}
+							    	for(var y=0;y<e.series[i][1][x];y++){
+							    		arr2[i].shift();
+							    	}
+							    }
+							}
+
+							cave(e.msg.date, e.msg.data, arr);
+						} else {
+							alert(e.msg);
+							throw 'FONIA';
+						}
+					},
+					error: function(e, m) {
+						if(m == 'timeout') {
+							alert('请求超时！');
+						} else {
+							alert('未知错误');
+						}
+						throw 'FONIA';
+					}
+				});
+				}
+			}
+			{if condition="$num>1"}
+		    FONIA.Pagination({id:"pagination",step:[1,10,{$num}],url:"/jump",pageid:'worker',listen:listen,uid:"{$uid}"});
+		    {/if}
+		    var png=function() {
+				if(this.innerText == '图表') {
+					this.innerHTML = '数据';
+					document.getElementsByTagName('table')[0].style.display = 'none';
+					document.getElementById('tb').style.display = 'block';
+				} else {
+					this.innerHTML = '图表';
+					document.getElementsByTagName('table')[0].style.display = 'table';
+					document.getElementById('tb').style.display = 'none';
+				}
+			}
+		    	
+			function sumarry(a,s,f){
+				var x= a.reduce((c,d,e)=>{if(s<=e&&e<=f){return c+=d;}else{return c;}});
+				return s==0?x:x-a[0];
+			}
+			function transtime(a){
+				return new Date(parseInt(a)).toLocaleString().split(' ')[0];
+			}
+			
+			function listen(){
+			document.querySelectorAll('tbody>tr>td:nth-child(11)').forEach(function(a) {
+				if(a.innerText == '编辑') {
+					a.addEventListener('click', function() {
+						window.open('/pid/' + this.parentNode.children[1].innerText);
+					});
+				}
+			});
+			window.parent.frames.windowslisten();
+			}
+			window.onload=listen();
+			document.getElementsByClassName('ed')[0].addEventListener('click', png);			
+
+			function cave(date, data, arr) {
+				var myChart = echarts.init(document.getElementById('main'));
+				option = {
+					tooltip: {
+						trigger: 'axis',
+						axisPointer: {
+							type: 'cross',
+							label: {
+								backgroundColor: '#6a7985'
+							}
+						}
+					},
+					toolbox: {
+        show: true,
+        feature: {
+            dataZoom: {
+                yAxisIndex: 'none'
+            },
+            saveAsImage: {}
+        }
+    },
+					legend: {
+						data: ['项目启动','方案设计','项目任务书', '项目设计', '调试', '归档'],
+					},
+					xAxis: {
+						type: 'category',
+						splitLine: {
+							show: true,
+							lineStyle: {
+								color: '#999',
+								type: 'dashed'
+							}
+						},
+						name: '日期',
+						data: date.split(','),
+					},
+					yAxis: {
+						type: 'category',
+						splitLine: {
+							show: true,
+							lineStyle: {
+								color: '#999',
+								type: 'dashed'
+							}
+						},
+						name: '项目名称',
+						data: data
+					},
+					series: [{
+						name: '项目启动',
+						type: 'effectScatter',
+						data: arr[0]
+					},{
+						name: '方案设计',
+						type: 'effectScatter',
+						data: arr[1]
+					}, {
+						name: '项目任务书',
+						type: 'effectScatter',
+						data: arr[2]
+					},{
+						name: '项目设计',
+						type: 'effectScatter',
+						data: arr[3]
+					}, {
+						name: '调试',
+						type: 'effectScatter',
+						data: arr[4]
+					}, {
+						name: '归档',
+						type: 'effectScatter',
+						data: arr[5]
+					}]
+				};
+				myChart.setOption(option);
+			}
+			if(localStorage.getItem('png')==1){
+		    		localStorage.setItem('png',0);
+		    		document.getElementsByClassName('ed')[0].innerHTML = '数据';
+					document.getElementsByTagName('table')[0].style.display = 'none';
+					document.getElementById('tb').style.display = 'block';
+					document.getElementsByTagName('select')[0].selectedIndex=Array.from(document.getElementsByTagName('select')[0].options,x=>x.value).indexOf((new Date()).toLocaleString().split(' ')[0].split('/')[0]);
+					document.getElementsByTagName('select')[1].selectedIndex=Array.from(document.getElementsByTagName('select')[1].options,x=>x.value).indexOf((new Date()).toLocaleString().split(' ')[0].split('/')[1]);
+		    		getdata();
+		    	}
+		</script>
+	</body>
+
+</html>

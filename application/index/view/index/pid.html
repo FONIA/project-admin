@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		{:X['DESC']}
+		<title></title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			html{
+				background: #fff;
+			}
+			div[main] {
+				width: calc(100% - 60px);
+				height: 100%;
+				padding: 0 30px 30px;
+				background: #fff;
+				border-top: 5px solid #797979;
+			}
+			
+			div[main]>p {
+				padding: 10px 0px 15px;
+				font-family: 'Arial Negreta', 'Arial Normal', 'Arial';
+				font-weight: 700;
+				font-style: normal;
+				font-size: 28px;
+				text-align: center;
+				letter-spacing: 5px;
+			}
+			
+			button:hover {
+				background: #99ccff;
+				color: #fff;
+				border: 1px solid #99ccff;
+				cursor: pointer;
+			}
+			
+			button {
+				width: 100px;
+				background: #fff;
+				margin: 0 5px;
+				height: 30px;
+				line-height: 30px;
+				font-size: 16px;
+				border: 1px solid #797979;
+				border-radius: 30px;
+				-moz-box-shadow: 2px 2px 2px rgba(204, 204, 204, .5);
+				-webkit-box-shadow: 2px 2px 2px rgba(204, 204, 204, .5);
+				box-shadow: 2px 2px 2px rgba(204, 204, 204, .5);
+				outline: none;
+			}
+			
+			.rw {
+				right: 30px;
+				position: absolute;
+				top: 20px;
+			}
+			
+			.ed {
+				right: 140px;
+				position: absolute;
+				top: 20px;
+			}
+			
+			.rt {
+				position: absolute;
+				top: 20px;
+			}
+			
+			table {
+				width: 100%;
+			}
+			
+			td,
+			th,
+			input {
+				height: 30px;
+				text-align: center;
+				width: 160px;
+				font-size: 15px;
+			}
+			
+			td[n] {
+				border-color: #fff0;
+			}
+			
+			.live {
+				line-height: 30px;
+				height: 100%;
+				display: block;
+				position: relative;
+				z-index: 1;
+				text-align: center;
+				width: 100%;
+			}
+			
+			.live span {
+				height: 100%;
+				background: #00c111;
+				float: left;
+				position: absolute;
+				z-index: -1;
+				left: 0;
+			}
+			
+			input {
+				width: 100%;
+				border: none;
+				outline: none;
+			}
+			
+			.show,input:hover {
+				background: #88caff;
+			}
+
+		</style>
+	</head>
+
+	<body>
+		<div main>
+			<p>{$res.pid}项目阶段进度表</p>
+			<button class="rt"  onclick="window.location.assign('/{:$_SESSION['think']['USER']['type']=='user'?'project':'allpj'}')">首页</button>
+			<button class="rt" style="left: 140px;" onclick="window.location.assign(document.referrer)">返回</button>
+			<button class="rw" onclick="window.location.assign('/task/{$res.pid}')">任务书</button>
+			<button onclick="edit(this)" class="ed">编辑</button>
+			<table class="first" border="1" align="center" cellpadding="6">
+				<tbody>
+					<tr>
+						<td>项目编号</td>
+						<td>{$res.pid}</td>
+						<td>套数</td>
+						<td>{$res.num}</td>
+						<td>启动日期</td>
+						<td stime>{$res.stime}</td>
+						<td n></td>
+						<td a>方案分析</td>
+						<td a>项目设计</td>
+						<td a>调试</td>
+						<td a>归档</td>
+					</tr>
+					<tr>
+						<td>机种名</td>
+						<td>{$res.kind}</td>
+						<td>客户名称</td>
+						<td>{$res.custom}</td>
+						<td>交货日期</td>
+						<td>{$res.etime}</td>
+						<td n></td>
+						<td top>0</td>
+						<td top>0</td>
+						<td top>0</td>
+						<td top>0</td>
+					</tr>
+					<tr>
+						<td>工程师</td>
+						<td>{$res.worker}</td>
+						<td>备注</td>
+						<td onclick="window.location.assign('/task/{$res.pid}')" colspan="3">详情</td>
+						<td n></td>
+						<td top2></td>
+						<td top2></td>
+						<td top2></td>
+						<td top2></td>
+					</tr>
+
+				</tbody>
+			</table>
+
+			<table border="1" align="center" cellpadding="6" style="margin-top: 20px;">
+				<thead>
+					<tr>
+						<th>步骤</th>
+						<th>工作内容</th>
+						<th>开始日期</th>
+						<th>计划完成日期</th>
+						<th>实际完成日期</th>
+						<th>完成度</th>
+						<th>时间差（天）</th>
+						<th>延迟天数</th>
+						<th>更多</th>
+					</tr>
+				</thead>
+				<tbody>
+					{volist name="list" id="v"}
+					<tr>
+						<td>{$key+1}</td>
+						<td>{$v[0]}</td>
+						<td t></td>
+						<td t></td>
+						<td r></td>
+						<td e>{$v[1]}</td>
+						<td e>{$v[3]}</td>
+						<td r>{$v[2]}</td>
+						<td>查看</td>
+					</tr>
+					{/volist}
+				</tbody>
+			</table>
+		</div>
+		<script>
+			window.onload=function(){
+				analyse();
+				rate();
+				time();
+				etime();
+			};
+			function transtime(a){
+				return new Date(parseInt(a)).toLocaleString().split(' ')[0];
+			}
+			function time(){
+				var s=document.querySelector('td[stime]').innerText;var day=new Array();
+				s=Date.parse(s);
+				document.querySelectorAll('td[e]:nth-child(odd)').forEach((a)=>{
+					a=isNaN(parseInt(a.innerText))?0:Number(parseFloat(a.innerText).toFixed(1));
+					day.push(a);
+				});
+				var st=new Array();
+				Array.from(day,(a,b)=>{
+					st.push(transtime(s+sumarry(day,0,b)*86400000));
+				});
+				document.querySelectorAll('td[t]:nth-child(even)').forEach((a,b)=>{
+					a.innerHTML=st[b];
+				});
+				document.querySelectorAll('td[t]:nth-child(odd)').forEach((a,b)=>{
+					if(b==0){
+						a.innerHTML=transtime(s);
+					}else{
+						a.innerHTML=st[b-1];
+					}
+				});
+			}
+			function sumarry(a,s,f){
+				var x= a.reduce((c,d,e)=>{if(s<=e&&e<=f){return c+=d;}else{return c;}});
+				return s==0?x:x-a[0];
+			}
+			function analyse(){
+				var day=new Array();var rate=new Array();
+				document.querySelectorAll('td[e]:nth-child(odd)').forEach((a)=>{
+					a=isNaN(parseInt(a.innerText))?0:Number(parseFloat(a.innerText).toFixed(1));
+					day.push(a);
+				});
+				document.querySelectorAll('td[e]:nth-child(even)').forEach((a)=>{
+					a=isNaN(parseInt(a.innerText.split('%')[0]))?0:Number(parseFloat(a.innerText.split('%')[0]).toFixed(2));
+					rate.push(a);
+				});
+				document.querySelectorAll('td[top]').forEach((a,b)=>{
+					switch(b){
+						case 0:a.innerHTML=sumarry(day,1,5)+'天';break;
+						case 1:a.innerHTML=sumarry(day,7,17)+'天';break;
+						case 2:a.innerHTML=sumarry(day,18,19)+'天';break;
+						default:a.innerHTML=sumarry(day,20,20)+'天';break;
+					}
+				});
+				document.querySelectorAll('td[top2]').forEach((a,b)=>{
+					var x='';
+					switch(b){
+						case 0:x='<li class="live">'+((sumarry(rate,1,5)/500)*100).toFixed(2)+'%<span style="width:'+((sumarry(rate,1,5)/500)*100).toFixed(2)+'%;"></span></li>';break;
+						case 1:x='<li class="live">'+((sumarry(rate,7,17)/1100)*100).toFixed(2)+'%<span style="width:'+((sumarry(rate,7,17)/1100)*100).toFixed(2)+'%;"></span></li>';break;
+						case 2:x='<li class="live">'+((sumarry(rate,18,19)/200)*100).toFixed(2)+'%<span style="width:'+((sumarry(rate,18,19)/200)*100).toFixed(2)+'%;"></span></li>';break;
+						default:x='<li class="live">'+sumarry(rate,20,20).toFixed(2)+'%<span style="width:'+sumarry(rate,20,20).toFixed(2)+'%;"></span></li>';break;
+					}
+					a.innerHTML=x;
+				});				
+			}
+			
+			function rate(){
+				document.querySelectorAll('td[e]:nth-child(even)').forEach((a)=>{
+					a.innerHTML='<li class="live">'+a.innerText+'%<span style="width:'+a.innerText+'%;"></span></li>';
+				});
+			}
+			
+			function edit(e) {
+				Array.from(document.querySelectorAll('tr'),x=>x.removeAttribute('style'));
+				e.setAttribute('onclick', 'save(this)');
+				e.innerText = '保存';
+				document.querySelectorAll('td[e]').forEach((a) => {
+					var t = parseFloat(a.innerText);
+					if(isNaN(t)) {
+						t = a.innerText.split('%')[0];
+					}
+					a.innerHTML = '<input value="' + t + '"/>';
+				});
+				document.querySelectorAll('td[r]:nth-child(even)').forEach((a)=>{
+					var t = parseInt(a.innerText);
+					a.innerHTML = '<input value="' + t + '"/>';
+				});
+			document.querySelectorAll('input').forEach((a)=>{
+				a.addEventListener('mouseenter',function(){
+					this.parentNode.parentNode.style='background: #88caff;';
+			    });
+			    a.addEventListener('mouseleave',function(){
+					this.parentNode.parentNode.removeAttribute('style');
+			    });
+			});
+			}
+			function datacheck(){
+				var flag=false;console.clear();
+				document.querySelectorAll('td[e]:nth-child(even)').forEach((a)=>{
+					var x=a.children[0].value;
+					if(parseFloat(x)<0||parseFloat(x)>100||isNaN(x)){
+						a.children[0].style.backgroundColor='red';
+						flag=true;
+					}else{
+						a.children[0].hasAttribute('style')?a.children[0].removeAttribute('style'):0;
+					}
+				});
+				document.querySelectorAll('td[e]:nth-child(odd)').forEach((a)=>{
+					var x=a.children[0].value;
+					if(isNaN(x)){
+						a.children[0].style.backgroundColor='red';
+						flag=true;
+					}else{
+						a.children[0].hasAttribute('style')?a.children[0].removeAttribute('style'):0;
+					}
+				});
+				if(flag){alert('红色背景框输入值错误，时间差、完成度都为数字类型，完成度范围：0-100！');throw 'FONIA';}
+			}
+			function save(e) {
+				datacheck();
+				var rate=new Array();var day=new Array();var diff=new Array();
+				document.querySelectorAll('td[e]:nth-child(even)').forEach((a)=>{
+					var x=a.children[0].value==''?0:a.children[0].value;
+					rate.push(x);
+					a.innerHTML='<li class="live">'+x+'%<span style="width:'+x+'%;"></span></li>';
+				});
+				document.querySelectorAll('td[r]:nth-child(even)').forEach((a)=>{
+					diff.push(a.children[0].value);
+					a.innerHTML = a.children[0].value;
+				});
+				document.querySelectorAll('td[e]:nth-child(odd)').forEach((a)=>{
+					day.push(a.children[0].value);
+					a.innerHTML=a.children[0].value;
+				});
+				FONIA.Ajax({type:'post',url:'/uploadpid',data:{'pid':"{$res.pid}",'day':JSON.stringify(day),'rate':JSON.stringify(rate),'diff':JSON.stringify(diff)},success:function(e){
+					if(e.statu==1){alert('已保存！');}else{alert(e.msg);throw 'FONIA';}
+				},error:function(e,m){
+					if(m=='timeout'){alert('请求超时！');}else{alert('未知错误');}
+					throw 'FONIA';
+				}});
+				analyse();
+				time();
+				etime();
+				e.setAttribute('onclick', 'edit(this)');
+				e.innerText = '编辑';
+			}
+			function etime(){
+				var diff=new Array();
+				document.querySelectorAll('td[r]:nth-child(even)').forEach((a)=>{
+					diff.push(a.innerText);
+				});				
+				document.querySelectorAll('td[r]:nth-child(odd)').forEach((a,b)=>{
+					a.innerHTML=transtime(Date.parse(a.previousElementSibling.innerText)+86400000*diff[b]);
+					if(diff[b]>0){
+						a.parentElement.style.backgroundColor='red';a.parentElement.style.color='white';
+					}else{
+						//a.parentElement.remo;a.parentElement.style.color='black';
+					}
+				});
+				
+			}
+			document.querySelectorAll('td[a]').forEach((a,b)=>{
+				
+				a.addEventListener('click',function(){
+					document.querySelectorAll('tbody:nth-child(2)>tr').forEach((x)=>{x.removeAttribute('class');});
+					if(this.hasAttribute('style')){
+						this.removeAttribute('style');
+					}else{
+						var list=[[1,2,3,4,5],[7,8,9,10,11,12,13,14,15,16,17],[18,19],[20]];
+					document.querySelectorAll('td[a]').forEach((x)=>{x.removeAttribute('style');});
+					this.setAttribute('style','background: #88caff;');
+					Array.from(list[b],x=>{document.querySelectorAll('tbody:nth-child(2)>tr')[x].setAttribute('class','show');});
+			        }
+				});
+				
+			});
+		window.FONIA=(function(){
+		return {pack: function() {
+			if(typeof arguments[0] === 'object') {
+				var pack = '';
+				for(var i in arguments[0]) {
+					pack += encodeURIComponent(i) + '=' + encodeURIComponent(arguments[0][i]) + '&';
+				}
+				return pack.substr(0, pack.length - 1);
+			} else {
+				return data;
+			}
+		},
+		Ajax: function() {
+			var method = arguments[0].type || 'GET';
+			var url = arguments[0].url || null;
+			var async = arguments[0].async || true;
+			var datatype = arguments[0].datatype || 'json';
+			var data = arguments[0].data || null;
+			var timeout = parseInt(arguments[0].timeout) || 3000;
+			var before = arguments[0].before || function() {};
+			var success = arguments[0].success || function() {};
+			var error = arguments[0].error || function() {};
+			var complete = arguments[0].complete || function() {};
+			method=method.toUpperCase();
+			before();
+			var xml = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject();
+			method == 'GET' ? (url = url + '?' + this.pack(data)) : null;
+			xml.open(method, url, async);
+			method == 'POST' ? (xml.setRequestHeader("content-type", "application/x-www-form-urlencoded")) : null;
+			xml.send(this.pack(data));
+			var tflag = setTimeout(function() {
+				if(xml.readyState != 4) {
+					error(xml, 'timeout');
+					xml.onreadystatechange = function() {};
+					xml.abort();
+				}
+			}, timeout);
+			xml.onreadystatechange = function() {
+				if(xml.readyState === 4) {
+					window.clearTimeout(tflag);
+					var status = xml.status;
+					if(status >= 200 && status < 300 || status == 304) {
+						success(JSON.parse(xml.responseText));
+					} else {
+						error(xml, status);
+					}
+				}
+			}
+		},};
+		})();
+		</script>
+	</body>
+
+</html>
